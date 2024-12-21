@@ -17,6 +17,7 @@ const ModalKeranjang = ({
   totalHarga,
   hapusPesanan
 }) => {
+  // Memastikan keranjangDetail tidak kosong sebelum menampilkan modal
   if (keranjangDetail) {
     return (
       <Modal show={showModal} onHide={handleClose}>
@@ -30,43 +31,40 @@ const ModalKeranjang = ({
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Group controlId="totalHarga">
               <Form.Label>Total Harga :</Form.Label>
               <p>
-                <strong>
-                  Rp. {numberWithCommas(totalHarga)}
-                </strong>
+                <strong>Rp. {numberWithCommas(totalHarga)}</strong>
               </p>
             </Form.Group>
 
-            <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Group controlId="jumlah">
               <Form.Label>Jumlah :</Form.Label>
-              <br />
-              <Button variant="primary" size="sm" className="mr-2" onClick={ () => kurang()}>
-                <FontAwesomeIcon icon={faMinus} />
-              </Button>
-
-              <strong>{jumlah}</strong>
-              
-              <Button variant="primary" size="sm" className="ml-2" onClick={ () => tambah()}>
-                <FontAwesomeIcon icon={faPlus} />
-              </Button>
+              <div className="d-flex align-items-center">
+                <Button variant="primary" size="sm" className="mr-2" onClick={kurang}>
+                  <FontAwesomeIcon icon={faMinus} />
+                </Button>
+                <strong>{jumlah}</strong>
+                <Button variant="primary" size="sm" className="ml-2" onClick={tambah}>
+                  <FontAwesomeIcon icon={faPlus} />
+                </Button>
+              </div>
             </Form.Group>
 
-            <Form.Group controlId="exampleForm.ControlTextarea1">
+            <Form.Group controlId="keterangan">
               <Form.Label>Keterangan :</Form.Label>
               <Form.Control
                 as="textarea"
                 rows="3"
                 name="keterangan"
-                placeholder="Contoh : Pedes, Nasi Setengah"
+                placeholder="Contoh: Pedas, Nasi Setengah"
                 value={keterangan}
-                onChange={(event) => changeHandler(event)}
+                onChange={changeHandler}
               />
             </Form.Group>
             <Button variant="primary" type="submit">
-                Simpan
-            </Button>   
+              Simpan
+            </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
@@ -77,18 +75,16 @@ const ModalKeranjang = ({
       </Modal>
     );
   } else {
+    // Tampilkan modal kosong jika keranjangDetail kosong
     return (
       <Modal show={showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Kosong</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Kosong</Modal.Body>
+        <Modal.Body>Keranjang kosong</Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
+            Tutup
           </Button>
         </Modal.Footer>
       </Modal>

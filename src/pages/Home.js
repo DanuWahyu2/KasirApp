@@ -14,14 +14,22 @@ export default class Home extends Component {
       categoriYangDipilih: "Makanan",
       keranjangs: [],
     };
+
+    // Membuat flag _isMounted untuk menandakan apakah komponen masih terpasang
+    this._isMounted = false;
   }
 
   componentDidMount() {
+    // Menandakan komponen sudah dipasang
+    this._isMounted = true;
+
     axios
       .get(API_URL + "products?category.nama=" + this.state.categoriYangDipilih)
       .then((res) => {
-        const menus = res.data;
-        this.setState({ menus });
+        if (this._isMounted) {  // Pastikan komponen masih terpasang sebelum update state
+          const menus = res.data;
+          this.setState({ menus });
+        }
       })
       .catch((error) => {
         console.log("Error yaa ", error);
@@ -30,8 +38,10 @@ export default class Home extends Component {
     axios
       .get(API_URL + "keranjangs")
       .then((res) => {
-        const keranjangs = res.data;
-        this.setState({ keranjangs });
+        if (this._isMounted) {  // Pastikan komponen masih terpasang sebelum update state
+          const keranjangs = res.data;
+          this.setState({ keranjangs });
+        }
       })
       .catch((error) => {
         console.log("Error yaa ", error);
@@ -43,13 +53,20 @@ export default class Home extends Component {
       axios
       .get(API_URL + "keranjangs")
       .then((res) => {
-        const keranjangs = res.data;
-        this.setState({ keranjangs });
+        if (this._isMounted) {  // Pastikan komponen masih terpasang sebelum update state
+          const keranjangs = res.data;
+          this.setState({ keranjangs });
+        }
       })
       .catch((error) => {
         console.log("Error yaa ", error);
       });
     }
+  }
+
+  componentWillUnmount() {
+    // Menandakan komponen sudah tidak terpasang
+    this._isMounted = false;
   }
 
   changeCategory = (value) => {
@@ -61,8 +78,10 @@ export default class Home extends Component {
     axios
       .get(API_URL + "products?category.nama=" + value)
       .then((res) => {
-        const menus = res.data;
-        this.setState({ menus });
+        if (this._isMounted) {  // Pastikan komponen masih terpasang sebelum update state
+          const menus = res.data;
+          this.setState({ menus });
+        }
       })
       .catch((error) => {
         console.log("Error yaa ", error);
